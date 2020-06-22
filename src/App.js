@@ -1,24 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
+import SearchMovies from './component/searchMovie';
+import MovieList from './component/movieList';
 
 function App() {
+  const [value] = useState("");
+
+  const [movies, setMovies] = useState([]);
+
+  const onsubmit = (movies) => {
+      setMovies(movies.results);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1 className="title">React Movie Search</h1>
+      <div className="container" id="container">
+        <SearchMovies data={value}
+          onsubmit={e => {
+            onsubmit(e);
+          }}
+          />
+        <div className="card-list" id="card">
+          {
+            (movies.filter(movie => movie.poster_path).map(movie => (
+                <MovieList movie={movie} key={movie.id} />
+            )))
+          }
+        </div> 
+      </div>
     </div>
   );
 }
